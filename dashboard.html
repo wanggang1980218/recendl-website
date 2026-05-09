@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>瑞森德隆压缩机设备监控分析大屏</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"Microsoft YaHei","Segoe UI",Roboto,sans-serif;background:#0a0e27;color:#fff;overflow:hidden;height:100vh;user-select:none}
+
+/* ===== 整体布局 ===== */
+.dashboard{width:100vw;height:100vh;display:flex;flex-direction:column;padding:12px;gap:12px;background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><rect fill="%230a0e27" width="1920" height="1080"/><circle cx="200" cy="200" r="300" fill="none" stroke="%231b4e7a" stroke-width="0.5" opacity="0.3"/><circle cx="200" cy="200" r="400" fill="none" stroke="%231b4e7a" stroke-width="0.3" opacity="0.2"/><circle cx="1700" cy="800" r="250" fill="none" stroke="%231b4e7a" stroke-width="0.5" opacity="0.3"/></svg>') no-repeat center;background-size:cover}
+
+/* ===== 顶部标题栏 ===== */
+.header{display:flex;align-items:center;justify-content:space-between;padding:10px 30px;background:linear-gradient(135deg,rgba(27,78,122,0.6) 0%,rgba(15,45,90,0.6) 100%);border:1px solid rgba(79,195,247,0.3);border-radius:12px;backdrop-filter:blur(10px);position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(79,195,247,0.8),transparent)}
+.header-title{flex:1;text-align:center}
+.header-title h1{font-size:26px;font-weight:700;letter-spacing:4px;background:linear-gradient(135deg,#4fc3f7,#81d4fa,#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.header-title .subtitle{font-size:12px;color:#5fa8d4;margin-top:4px;letter-spacing:2px}
+.header-stats{display:flex;gap:30px}
+.stat-box{text-align:center;padding:8px 20px;background:rgba(79,195,247,0.1);border-radius:8px;border:1px solid rgba(79,195,247,0.2)}
+.stat-box .val{font-size:28px;font-weight:700;color:#4fc3f7;line-height:1}
+.stat-box .lab{font-size:11px;color:#8ec5e8;margin-top:4px}
+.header-time{text-align:right}
+.header-time .time{font-size:22px;font-weight:700;color:#4fc3f7;font-family:'Courier New',monospace}
+.header-time .date{font-size:12px;color:#8ec5e8;margin-top:4px}
+
+/* ===== 主内容区 ===== */
+.main{display:grid;grid-template-columns:320px 1fr 320px;gap:12px;flex:1;min-height:0}
+.col{display:flex;flex-direction:column;gap:12px}
+
+/* ===== 面板通用样式 ===== */
+.panel{background:rgba(10,20,50,0.8);border:1px solid rgba(79,195,247,0.25);border-radius:10px;padding:15px;display:flex;flex-direction:column;position:relative;overflow:hidden;backdrop-filter:blur(5px)}
+.panel::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(79,195,247,0.6),transparent)}
+.panel-title{display:flex;align-items:center;gap:10px;margin-bottom:12px;font-size:15px;font-weight:600;color:#4fc3f7;letter-spacing:1px}
+.panel-title::before{content:'';width:4px;height:18px;background:linear-gradient(180deg,#4fc3f7,#1b4e7a);border-radius:2px;flex-shrink:0}
+.panel-title .icon{margin-right:4px}
+.panel-chart{flex:1;min-height:0;position:relative}
+
+/* ===== 左侧面板 ===== */
+.p-left{}
+
+/* ===== 中间面板 ===== */
+.p-center{flex-direction:column}
+.p-center .top-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.p-center .top-row .panel-chart{height:160px}
+
+/* ===== 右侧面板 ===== */
+.p-right{}
+
+/* ===== 底部状态栏 ===== */
+.footer{display:flex;justify-content:space-between;align-items:center;padding:8px 30px;background:rgba(10,20,50,0.6);border:1px solid rgba(79,195,247,0.15);border-radius:8px;font-size:12px;color:#8ec5e8}
+.footer-left{display:flex;gap:20px}
+.footer-left .item{display:flex;align-items:center;gap:6px}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dot-green{background:#4caf50;box-shadow:0 0 6px rgba(76,175,80,0.6);animation:pulse 2s infinite}
+.dot-yellow{background:#ff9800;box-shadow:0 0 6px rgba(255,152,0,0.6);animation:pulse 1.5s infinite}
+.dot-red{background:#f44336;box-shadow:0 0 6px rgba(244,67,54,0.6)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+
+/* ===== 告警列表 ===== */
+.alarm-list{flex:1;overflow:hidden;display:flex;flex-direction:column;gap:6px}
+.alarm-item{display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(255,255,255,0.03);border-radius:6px;border-left:3px solid;transition:all 0.3s}
+.alarm-item:hover{background:rgba(79,195,247,0.08)}
+.alarm-item.critical{border-left-color:#f44336}
+.alarm-item.warning{border-left-color:#ff9800}
+.alarm-item.info{border-left-color:#4fc3f7}
+.alarm-level{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
+.alarm-item.critical .alarm-level{background:rgba(244,67,54,0.2);color:#f44336}
+.alarm-item.warning .alarm-level{background:rgba(255,152,0,0.2);color:#ff9800}
+.alarm-item.info .alarm-level{background:rgba(79,195,247,0.2);color:#4fc3f7}
+.alarm-info{flex:1;min-width:0}
+.alarm-msg{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.alarm-detail{font-size:10px;color:#8ec5e8;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.alarm-time{font-size:10px;color:#666;font-family:'Courier New',monospace;flex-shrink:0}
+
+/* ===== 设备状态饼图 ===== */
+.status-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.scard{padding:10px;border-radius:8px;text-align:center;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);transition:all 0.3s}
+.scard:hover{transform:translateY(-2px);border-color:rgba(79,195,247,0.3)}
+.scard .num{font-size:24px;font-weight:700;line-height:1.2}
+.scard .lbl{font-size:11px;color:#8ec5e8;margin-top:4px}
+.scard.running{border-left:3px solid #4caf50}.scard.running .num{color:#4caf50}
+.scard.standby{border-left:3px solid #ff9800}.scard.standby .num{color:#ff9800}
+.scard.offline{border-left:3px solid #f44336}.scard.offline .num{color:#f44336}
+.scard.maintenance{border-left:3px solid #9c27b0}.scard.maintenance .num{color:#9c27b0}
+
+/* ===== 设备列表 ===== */
+.device-list{flex:1;overflow:hidden;display:flex;flex-direction:column;gap:6px}
+.device-item{display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(255,255,255,0.03);border-radius:6px;transition:all 0.3s}
+.device-item:hover{background:rgba(79,195,247,0.06)}
+.dev-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dev-dot.running{background:#4caf50;box-shadow:0 0 6px rgba(76,175,80,0.5)}
+.dev-dot.standby{background:#ff9800}
+.dev-dot.offline{background:#f44336}
+.dev-info{flex:1;min-width:0}
+.dev-name{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dev-site{font-size:10px;color:#8ec5e8;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dev-params{text-align:right;font-size:11px;color:#aaa;flex-shrink:0}
+.dev-params .p1{color:#4fc3f7}
+.dev-params .p2{color:#8ec5e8;font-size:10px}
+
+/* ===== 维护计划 ===== */
+.maint-list{flex:1;overflow:hidden;display:flex;flex-direction:column;gap:6px}
+.maint-item{display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(255,255,255,0.03);border-radius:6px;border-left:3px solid #ff9800}
+.maint-date{width:44px;text-align:center;flex-shrink:0}
+.maint-date .day{font-size:18px;font-weight:700;color:#ff9800;line-height:1}
+.maint-date .month{font-size:10px;color:#8ec5e8}
+.maint-info{flex:1;min-width:0}
+.maint-name{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.maint-desc{font-size:10px;color:#8ec5e8;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ===== 健康评分 ===== */
+.health-ring{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+.health-value{font-size:48px;font-weight:700;color:#4fc3f7;line-height:1}
+.health-label{font-size:13px;color:#8ec5e8}
+.health-bar{width:80%;height:6px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden;margin-top:5px}
+.health-bar-fill{height:100%;background:linear-gradient(90deg,#4caf50,#ff9800,#f44336);border-radius:3px;transition:width 1s}
+
+/* ===== 排名列表 ===== */
+.rank-list{flex:1;overflow:hidden;display:flex;flex-direction:column;gap:6px}
+.rank-item{display:flex;align-items:center;gap:10px;padding:6px 8px;background:rgba(255,255,255,0.03);border-radius:6px}
+.rank-num{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.rank-num.top1{background:rgba(255,215,0,0.2);color:#ffd700}
+.rank-num.top2{background:rgba(192,192,192,0.2);color:#c0c0c0}
+.rank-num.top3{background:rgba(205,127,50,0.2);color:#cd7f32}
+.rank-num.normal{background:rgba(79,195,247,0.1);color:#4fc3f7}
+.rank-name{flex:1;font-size:12px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rank-bar-wrap{flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden}
+.rank-bar{height:100%;background:linear-gradient(90deg,#1b4e7a,#4fc3f7);border-radius:3px;transition:width 1s}
+.rank-val{font-size:11px;color:#4fc3f7;flex-shrink:0;min-width:40px;text-align:right}
+
+/* ===== 运维工单 ===== */
+.order-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
+.order-stat{padding:10px;border-radius:8px;text-align:center;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06)}
+.order-stat .val{font-size:20px;font-weight:700;color:#4fc3f7}
+.order-stat .lbl{font-size:10px;color:#8ec5e8;margin-top:3px}
+.order-stat.green{border-left:3px solid #4caf50}.order-stat.green .val{color:#4caf50}
+.order-stat.orange{border-left:3px solid #ff9800}.order-stat.orange .val{color:#ff9800}
+.order-stat.blue{border-left:3px solid #2196f3}.order-stat.blue .val{color:#2196f3}
+
+/* ===== 地图区域 ===== */
+.map-area{flex:1;border-radius:8px;overflow:hidden;background:rgba(0,0,0,0.3);position:relative;min-height:200px}
+.map-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:#5fa8d4;gap:8px}
+.map-placeholder .icon{font-size:40px;opacity:0.5}
+.map-placeholder .txt{font-size:12px;opacity:0.7}
+
+/* ===== 底部两图表 ===== */
+.bottom-charts{display:grid;grid-template-columns:1fr 1fr;gap:12px;flex:1;min-height:0}
+.bottom-charts .panel-chart{}
+
+/* ===== 动画 ===== */
+@keyframes fadeInDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeInLeft{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes fadeInRight{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(0.8)}to{opacity:1;transform:scale(1)}}
+.header{animation:fadeInDown 0.8s ease}
+.col:nth-child(1) .panel{animation:fadeInLeft 0.6s ease}
+.col:nth-child(2) .panel{animation:scaleIn 0.6s ease}
+.col:nth-child(3) .panel{animation:fadeInRight 0.6s ease}
+
+/* ===== 滚动条 ===== */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:rgba(255,255,255,0.05)}
+::-webkit-scrollbar-thumb{background:rgba(79,195,247,0.3);border-radius:2px}
+::-webkit-scrollbar-thumb:hover{background:rgba(79,195,247,0.5)}
+
+/* ===== 响应式 ===== */
+@media(max-width:1400px){.main{grid-template-columns:280px 1fr 280px}.stat-box .val{font-size:22px}.header-stats{gap:15px}}
+@media(max-width:1100px){.main{grid-template-columns:1fr 1fr}.p-right{display:none}}
+@media(max-width:768px){.main{grid-template-columns:1fr}.header h1{font-size:18px}.p-center .top-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="dashboard">
+  <!-- 顶部标题栏 -->
+  <div class="header">
+    <div class="header-stats">
+      <div class="stat-box"><div class="val" id="s1">156</div><div class="lab">设备总数</div></div>
+      <div class="stat-box"><div class="val" id="s2">94.2<span style="font-size:14px">%</span></div><div class="lab">在线率</div></div>
+      <div class="stat-box"><div class="val" id="s3">3</div><div class="lab">当前告警</div></div>
+    </div>
+    <div class="header-title">
+      <h1>瑞森德隆压缩机设备监控分析大屏</h1>
+      <div class="subtitle">XIAN RECENDL COMPRESSOR EQUIPMENT MONITORING CENTER</div>
+    </div>
+    <div class="header-time">
+      <div class="time" id="clock">--:--:--</div>
+      <div class="date" id="date">----/--/--</div>
+    </div>
+  </div>
+
+  <!-- 主内容区 -->
+  <div class="main">
+    <!-- 左侧 -->
+    <div class="col p-left">
+      <!-- 压缩机运行状态 -->
+      <div class="panel">
+        <div class="panel-title"><span class="icon">📊</span>压缩机运行状态</div>
+        <div class="panel-chart" id="chart-status"></div>
+        <div class="status-grid">
+          <div class="scard running"><div class="num" id="cnt-running">128</div><div class="lbl">运行中</div></div>
+          <div class="scard standby"><div class="num" id="cnt-standby">18</div><div class="lbl">待机</div></div>
+          <div class="scard offline"><div class="num" id="cnt-offline">6</div><div class="lbl">离线</div></div>
+          <div class="scard maintenance"><div class="num" id="cnt-maint">4</div><div class="lbl">维护中</div></div>
+        </div>
+      </div>
+      <!-- 实时告警 -->
+      <div class="panel">
+        <div class="panel-title"><span class="icon">🔔</span>实时告警</div>
+        <div class="alarm-list" id="alarmList">
+          <div class="alarm-item critical"><div class="alarm-level">!</div><div class="alarm-info"><div class="alarm-msg">排气温度超限</div><div class="alarm-detail">REC-800 / 大庆油田 #3站</div></div><div class="alarm-time">14:08</div></div>
+          <div class="alarm-item warning"><div class="alarm-level">⚠</div><div class="alarm-info"><div class="alarm-msg">润滑油压力低</div><div class="alarm-detail">RH-1500 / 塔里木油田</div></div><div class="alarm-time">14:05</div></div>
+          <div class="alarm-item warning"><div class="alarm-level">⚠</div><div class="alarm-info"><div class="alarm-msg">振动异常告警</div><div class="alarm-detail">REC-500 / 长庆油田 #2站</div></div><div class="alarm-time">13:52</div></div>
+          <div class="alarm-item info"><div class="alarm-level">i</div><div class="alarm-info"><div class="alarm-msg">滤芯更换提醒</div><div class="alarm-detail">REC-600 / 胜利油田</div></div><div class="alarm-time">13:30</div></div>
+          <div class="alarm-item warning"><div class="alarm-level">⚠</div><div class="alarm-info"><div class="alarm-msg">冷却水温高</div><div class="alarm-detail">REC-400 / 中亚管道A站</div></div><div class="alarm-time">12:45</div></div>
+        </div>
+      </div>
+      <!-- 设备健康评分 -->
+      <div class="panel">
+        <div class="panel-title"><span class="icon">💚</span>设备健康评分</div>
+        <div class="panel-chart" id="chart-health"></div>
+      </div>
+    </div>
+
+    <!-- 中间 -->
+    <div class="col p-center">
+      <!-- 顶部两图表 -->
+      <div class="top-row">
+        <!-- 部件温度监测 -->
+        <div class="panel">
+          <div class="panel-title"><span class="icon">🌡️</span>关键部件温度监测</div>
+          <div class="panel-chart" id="chart-temp"></div>
+        </div>
+        <!-- 设备类型分布 -->
+        <div class="panel">
+          <div class="panel-title"><span class="icon">🔧</span>设备类型分布</div>
+          <div class="panel-chart" id="chart-type"></div>
+        </div>
+      </div>
+      <!-- 全国设备分布地图 -->
+      <div class="panel" style="flex:1.2">
+        <div class="panel-title"><span class="icon">🗺️</span>全国设备分布 <span style="font-size:11px;color:#8ec5e8;font-weight:400">(23省 156台设备)</span></div>
+        <div class="map-area" id="map-area">
+          <div class="map-placeholder"><div class="icon">🗺️</div><div class="txt">设备分布地图</div></div>
+        </div>
+      </div>
+      <!-- 底部两图表 -->
+      <div class="bottom-charts">
+        <!-- 排气压力趋势 -->
+        <div class="panel">
+          <div class="panel-title"><span class="icon">📈</span>排气压力与产量趋势</div>
+          <div class="panel-chart" id="chart-pressure"></div>
+        </div>
+        <!-- 运维工单统计 -->
+        <div class="panel">
+          <div class="panel-title"><span class="icon">📋</span>运维工单统计</div>
+          <div class="order-stats">
+            <div class="order-stat green"><div class="val" id="order-total">47</div><div class="lbl">本月工单</div></div>
+            <div class="order-stat orange"><div class="val" id="order-pending">8</div><div class="lbl">待处理</div></div>
+            <div class="order-stat blue"><div class="val" id="order-done">39</div><div class="lbl">已完成</div></div>
+          </div>
+          <div class="panel-chart" id="chart-order"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右侧 -->
+    <div class="col p-right">
+      <!-- 重点设备监控 -->
+      <div class="panel" style="flex:1.5">
+        <div class="panel-title"><span class="icon">🔍</span>重点设备监控</div>
+        <div class="device-list" id="deviceList">
+          <div class="device-item"><div class="dev-dot running"></div><div class="dev-info"><div class="dev-name">REC-800 往复式压缩机</div><div class="dev-site">大庆油田 #3增压站</div></div><div class="dev-params"><div class="p1">8.2 MPa</div><div class="p2">800 Nm³/h</div></div></div>
+          <div class="device-item"><div class="dev-dot running"></div><div class="dev-info"><div class="dev-name">RH-1500 离心式压缩机</div><div class="dev-site">塔里木油田 天然气处理厂</div></div><div class="dev-params"><div class="p1">12.5 MPa</div><div class="p2">1500 Nm³/h</div></div></div>
+          <div class="device-item"><div class="dev-dot running"></div><div class="dev-info"><div class="dev-name">REC-600 橇装压缩机组</div><div class="dev-site">长庆油田 #2集气站</div></div><div class="dev-params"><div class="p1">6.8 MPa</div><div class="p2">600 Nm³/h</div></div></div>
+          <div class="device-item"><div class="dev-dot standby"></div><div class="dev-info"><div class="dev-name">REC-400 往复式压缩机</div><div class="dev-site">胜利油田 注气站</div></div><div class="dev-params"><div class="p2">待机中</div><div class="p2">--</div></div></div>
+          <div class="device-item"><div class="dev-dot running"></div><div class="dev-info"><div class="dev-name">RH-2000 离心式压缩机</div><div class="dev-site">中亚天然气管道 A站</div></div><div class="dev-params"><div class="p1">10.0 MPa</div><div class="p2">2000 Nm³/h</div></div></div>
+          <div class="device-item"><div class="dev-dot offline"></div><div class="dev-info"><div class="dev-name">REC-500 往复式压缩机</div><div class="dev-site">新疆油田 #1站</div></div><div class="dev-params"><div class="p2">离线</div><div class="p2">已停机 2h</div></div></div>
+        </div>
+      </div>
+      <!-- 客户现场排名 -->
+      <div class="panel" style="flex:1">
+        <div class="panel-title"><span class="icon">🏆</span>客户现场表现排名</div>
+        <div class="rank-list" id="rankList">
+          <div class="rank-item"><div class="rank-num top1">1</div><div class="rank-name">大庆油田 #3站</div><div class="rank-bar-wrap"><div class="rank-bar" style="width:98%"></div></div><div class="rank-val">98分</div></div>
+          <div class="rank-item"><div class="rank-num top2">2</div><div class="rank-name">塔里木油田 处理厂</div><div class="rank-bar-wrap"><div class="rank-bar" style="width:95%"></div></div><div class="rank-val">95分</div></div>
+          <div class="rank-item"><div class="rank-num top3">3</div><div class="rank-name">中亚管道 A站</div><div class="rank-bar-wrap"><div class="rank-bar" style="width:92%"></div></div><div class="rank-val">92分</div></div>
+          <div class="rank-item"><div class="rank-num normal">4</div><div class="rank-name">长庆油田 #2站</div><div class="rank-bar-wrap"><div class="rank-bar" style="width:88%"></div></div><div class="rank-val">88分</div></div>
+          <div class="rank-item"><div class="rank-num normal">5</div><div class="rank-name">胜利油田 注气站</div><div class="rank-bar-wrap"><div class="rank-bar" style="width:85%"></div></div><div class="rank-val">85分</div></div>
+          <div class="rank-item"><div class="rank-num normal">6</div><div class="rank-name">新疆油田 #1站</div><div class="rank-bar-wrap"><div class="rank-bar" style="width:82%"></div></div><div class="rank-val">82分</div></div>
+        </div>
+      </div>
+      <!-- 近期维护计划 -->
+      <div class="panel">
+        <div class="panel-title"><span class="icon">🛠️</span>近期维护计划</div>
+        <div class="maint-list">
+          <div class="maint-item"><div class="maint-date"><div class="day">08</div><div class="month">5月</div></div><div class="maint-info"><div class="maint-name">REC-800 例行保养</div><div class="maint-desc">更换润滑油、检查气阀、清洁冷却器</div></div></div>
+          <div class="maint-item"><div class="maint-date"><div class="day">12</div><div class="month">5月</div></div><div class="maint-info"><div class="maint-name">RH-1500 年度大修</div><div class="maint-desc">叶轮检查、轴承更换、动平衡校正</div></div></div>
+          <div class="maint-item"><div class="maint-date"><div class="day">15</div><div class="month">5月</div></div><div class="maint-info"><div class="maint-name">REC-600 滤芯更换</div><div class="maint-desc">空气滤芯、油滤芯、油气分离芯</div></div></div>
+          <div class="maint-item"><div class="maint-date"><div class="day">20</div><div class="month">5月</div></div><div class="maint-info"><div class="maint-name">RH-2000 预防性维护</div><div class="maint-desc">振动分析、油液检测、性能测试</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部状态栏 -->
+  <div class="footer">
+    <div class="footer-left">
+      <div class="item"><div class="dot dot-green"></div><span>系统运行正常</span></div>
+      <div class="item"><div class="dot dot-yellow"></div><span>3 个告警待处理</span></div>
+      <div class="item"><div class="dot dot-green"></div><span>数据同步正常</span></div>
+      <div class="item"><div class="dot dot-green"></div><span>API 连接正常</span></div>
+    </div>
+    <div>西安瑞森德隆压缩机有限公司 | 设备远程监控系统 v2.0 | © 2026</div>
+  </div>
+</div>
+
+<script>
+// ============ 时钟 ============
+function updateClock(){
+  const now=new Date(),d=now,Y=String(d.getFullYear()),M=String(d.getMonth()+1).padStart(2,'0'),DD=String(d.getDate()).padStart(2,'0');
+  const h=String(d.getHours()).padStart(2,'0'),mi=String(d.getMinutes()).padStart(2,'0'),s=String(d.getSeconds()).padStart(2,'0');
+  document.getElementById('clock').textContent=h+':'+mi+':'+s;
+  document.getElementById('date').textContent=Y+'/'+M+'/'+DD;
+}
+setInterval(updateClock,1000);updateClock();
+
+// ============ ECharts 全局配置 ============
+echarts.registerTheme('recendl',{
+  backgroundColor:'transparent',color:['#4fc3f7','#4caf50','#ff9800','#f44336','#9c27b0','#2196f3','#ffd700','#81d4fa']
+});
+
+// ============ 图表1: 运行状态饼图 ============
+var chartStatus=echarts.init(document.getElementById('chart-status'));
+chartStatus.setOption({
+  tooltip:{trigger:'item',formatter:'{b}: {c}台 ({d}%)'},
+  series:[{
+    type:'pie',radius:['45%','70%'],center:['50%','50%'],
+    avoidLabelOverlap:false,itemStyle:{borderRadius:6,borderColor:'#0a0e27',borderWidth:2},
+    label:{show:false},emphasis:{label:{show:true,fontSize:12,fontWeight:'bold'}},
+    data:[
+      {value:128,name:'运行中',itemStyle:{color:'#4caf50'}},
+      {value:18,name:'待机',itemStyle:{color:'#ff9800'}},
+      {value:6,name:'离线',itemStyle:{color:'#f44336'}},
+      {value:4,name:'维护中',itemStyle:{color:'#9c27b0'}}
+    ]
+  }]
+});
+
+// ============ 图表2: 健康评分仪表盘 ============
+var chartHealth=echarts.init(document.getElementById('chart-health'));
+chartHealth.setOption({
+  series:[{
+    type:'gauge',startAngle:200,endAngle:-20,min:0,max:100,radius:'85%',
+    center:['50%','55%'],
+    pointer:{show:false},
+    progress:{show:true,overlap:false,roundCap:true,clip:false,
+      itemStyle:{color:{
+        type:'linear',x:0,y:0,x2:1,y2:0,
+        colorStops:[
+          {offset:0,color:'#f44336'},
+          {offset:0.5,color:'#ff9800'},
+          {offset:1,color:'#4caf50'}
+        ]
+      }}
+    },
+    axisLine:{lineStyle:{width:12,color:[[1,'rgba(255,255,255,0.06)']]}},
+    splitLine:{show:false},axisTick:{show:false},axisLabel:{show:false},
+    anchor:{show:false},title:{show:false},
+    detail:{
+      valueAnimation:true,formatter:'{value}',
+      color:'#4fc3f7',fontSize:36,fontWeight:'bold',
+      offsetCenter:[0,'30%']
+    },
+    data:[{value:87}]
+  }]
+});
+// 中心文字
+var healthEl=document.getElementById('chart-health');
+healthEl.innerHTML+='<div style="position:absolute;top:58%;left:50%;transform:translateX(-50%);text-align:center;pointer-events:none"><div style="font-size:12px;color:#8ec5e8">综合健康评分</div><div style="font-size:11px;color:#4fc3f7;margin-top:2px">↑ 较上月+3分</div></div>';
+
+// ============ 图表3: 温度监测柱状图 ============
+var chartTemp=echarts.init(document.getElementById('chart-temp'));
+var tempData=[{name:'REC-800\n大庆',value:78},{name:'RH-1500\n塔里木',value:82},{name:'REC-600\n长庆',value:71},{name:'REC-400\n胜利',value:68},{name:'RH-2000\n中亚',value:75},{name:'REC-500\n新疆',value:null}];
+chartTemp.setOption({
+  tooltip:{trigger:'axis',formatter:p=>p[0].name+'<br/>'+p[0].seriesName+': '+(p[0].value||'离线')+'°C'},
+  grid:{top:10,right:10,bottom:10,left:10,containLabel:true},
+  xAxis:{type:'category',data:tempData.map(d=>d.name),axisLabel:{color:'#8ec5e8',fontSize:10,interval:0},axisLine:{lineStyle:{color:'rgba(79,195,247,0.2)'}},splitLine:{show:false}},
+  yAxis:{type:'value',min:0,max:120,axisLabel:{color:'#8ec5e8',fontSize:10},splitLine:{lineStyle:{color:'rgba(79,195,247,0.1)'}},axisLine:{show:false}},
+  series:[{
+    name:'部件温度',type:'bar',barWidth:14,
+    itemStyle:{
+      color:function(p){var v=p.data.value;if(v===null)return'rgba(100,100,100,0.3)';if(v>80)return'#f44336';if(v>70)return'#ff9800';return'#4caf50';},
+      borderRadius:[4,4,0,0]
+    },
+    data:tempData.map(d=>d.value===null?{value:null,itemStyle:{color:'rgba(100,100,100,0.3)'}}:d.value),
+    label:{show:true,position:'top',formatter:'{c}°C',color:'#8ec5e8',fontSize:10},
+    markLine:{data:[{yAxis:80,lineStyle:{color:'#f44336',type:'dashed'},label:{formatter:'警戒80°C',color:'#f44336',fontSize:9}}]}
+  }]
+});
+
+// ============ 图表4: 设备类型分布玫瑰图 ============
+var chartType=echarts.init(document.getElementById('chart-type'));
+chartType.setOption({
+  tooltip:{trigger:'item',formatter:'{b}: {c}台 ({d}%)'},
+  series:[{
+    type:'pie',radius:['20%','65%'],center:['50%','50%'],roseType:'area',
+    itemStyle:{borderRadius:5,borderColor:'#0a0e27',borderWidth:1},
+    label:{show:true,color:'#8ec5e8',fontSize:10,formatter:'{b}\n{c}台'},
+    data:[
+      {value:72,name:'REC往复式',itemStyle:{color:'#1e88e5'}},
+      {value:38,name:'RH离心式',itemStyle:{color:'#4fc3f7'}},
+      {value:28,name:'橇装机组',itemStyle:{color:'#26c6da'}},
+      {value:12,name:'气体处理',itemStyle:{color:'#00acc1'}},
+      {value:6,name:'备件服务',itemStyle:{color:'#00897b'}}
+    ]
+  }]
+});
+
+// ============ 图表5: 排气压力趋势 ============
+var chartPressure=echarts.init(document.getElementById('chart-pressure'));
+var pData=[],fData=[],tData=[];
+for(var i=0;i<24;i++){var h=String(i).padStart(2,'0');pData.push(h+':00');fData.push((7.5+Math.random()*1.5).toFixed(1));tData.push((1000+Math.random()*500)|0);}
+chartPressure.setOption({
+  tooltip:{trigger:'axis',axisPointer:{type:'cross'},formatter:function(p){return p[0].axisValue+'<br/>'+p.map(x=>x.marker+x.seriesName+': <b>'+x.value+(x.seriesIndex===0?' MPa':' Nm³/h')+'</b>').join('<br/>');}},
+  legend:{data:['排气压力','排气量'],top:0,textStyle:{color:'#8ec5e8',fontSize:10},itemWidth:14},
+  grid:{top:30,right:10,bottom:10,left:45,containLabel:false},
+  xAxis:{type:'category',data:pData,axisLabel:{color:'#8ec5e8',fontSize:9,interval:3},axisLine:{lineStyle:{color:'rgba(79,195,247,0.2)'}},splitLine:{show:false}},
+  yAxis:[
+    {type:'value',name:'MPa',min:5,max:15,axisLabel:{color:'#8ec5e8',fontSize:9},splitLine:{lineStyle:{color:'rgba(79,195,247,0.1)'}},nameTextStyle:{color:'#8ec5e8',fontSize:9}},
+    {type:'value',name:'Nm³/h',min:500,max:2000,axisLabel:{show:false},splitLine:{show:false}}
+  ],
+  series:[
+    {name:'排气压力',type:'line',smooth:true,symbol:'none',yAxisIndex:0,data:fData,lineStyle:{color:'#4fc3f7',width:2},areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(79,195,247,0.3)'},{offset:1,color:'rgba(79,195,247,0.02)'}]}}},
+    {name:'排气量',type:'line',smooth:true,symbol:'none',yAxisIndex:1,data:tData,lineStyle:{color:'#ff9800',width:2},areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(255,152,0,0.2)'},{offset:1,color:'rgba(255,152,0,0.02)'}]}}}
+  ]
+});
+
+// ============ 图表6: 运维工单柱状图 ============
+var chartOrder=echarts.init(document.getElementById('chart-order'));
+var orderX=['1月','2月','3月','4月','5月'];
+chartOrder.setOption({
+  tooltip:{trigger:'axis',axisPointer:{type:'shadow'}},
+  legend:{data:['已完成','待处理'],top:0,textStyle:{color:'#8ec5e8',fontSize:10},itemWidth:12},
+  grid:{top:30,right:10,bottom:10,left:40,containLabel:false},
+  xAxis:{type:'category',data:orderX,axisLabel:{color:'#8ec5e8',fontSize:10},axisLine:{lineStyle:{color:'rgba(79,195,247,0.2)'}},splitLine:{show:false}},
+  yAxis:{type:'value',axisLabel:{color:'#8ec5e8',fontSize:10},splitLine:{lineStyle:{color:'rgba(79,195,247,0.1)'}},axisLine:{show:false}},
+  series:[
+    {name:'已完成',type:'bar',stack:'total',barWidth:12,itemStyle:{color:'#4caf50',borderRadius:[0,0,0,0]},data:[35,38,42,39,39]},
+    {name:'待处理',type:'bar',stack:'total',barWidth:12,itemStyle:{color:'#ff9800',borderRadius:[0,0,0,0]},data:[5,3,6,8,8]}
+  ]
+});
+
+// ============ 自动刷新模拟数据 ============
+function randomAlarm(){
+  if(Math.random()>0.75){
+    var alarms=[
+      {m:'油耗异常',d:'REC-600 / 长庆油田',l:'warning'},
+      {m:'振动超标',d:'RH-1500 / 塔里木',l:'critical'},
+      {m:'滤芯堵塞',d:'REC-400 / 胜利油田',l:'info'},
+      {m:'温度偏高',d:'RH-2000 / 中亚管道',l:'warning'}
+    ];
+    var a=alarms[Math.floor(Math.random()*alarms.length)];
+    var now=new Date(),t=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+    var icons={'critical':'!','warning':'⚠','info':'i'};
+    var html='<div class="alarm-item '+a.l+'" style="animation:fadeInDown 0.4s ease"><div class="alarm-level">'+icons[a.l]+'</div><div class="alarm-info"><div class="alarm-msg">'+a.m+'</div><div class="alarm-detail">'+a.d+'</div></div><div class="alarm-time">'+t+'</div></div>';
+    var list=document.getElementById('alarmList');list.insertAdjacentHTML('afterbegin',html);
+    if(list.children.length>8)list.lastElementChild.remove();
+    var c=parseInt(document.getElementById('s3').textContent)+1;document.getElementById('s3').textContent=c;
+  }
+}
+setInterval(randomAlarm,8000);
+
+function updateStats(){
+  var r=128+Math.floor(Math.random()*5-2);
+  document.getElementById('cnt-running').textContent=r;
+  document.getElementById('s2').innerHTML=(92+Math.random()*4).toFixed(1)+'<span style="font-size:14px">%</span>';
+  chartStatus.setOption({series:[{data:[{value:r,name:'运行中',itemStyle:{color:'#4caf50'}},{value:18,name:'待机',itemStyle:{color:'#ff9800'}},{value:6,name:'离线',itemStyle:{color:'#f44336'}},{value:4,name:'维护中',itemStyle:{color:'#9c27b0'}}]}]});
+  chartHealth.setOption({series:[{data:[{value:(85+Math.random()*10)|0}]}]});
+  var nd=[];for(var i=0;i<24;i++)nd.push((7.5+Math.random()*1.5).toFixed(1));
+  chartPressure.setOption({series:[{data:nd}]});
+}
+setInterval(updateStats,6000);
+
+// ============ 窗口自适应 ============
+window.addEventListener('resize',function(){
+  chartStatus.resize();chartHealth.resize();chartTemp.resize();chartType.resize();chartPressure.resize();chartOrder.resize();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>压缩机备件与原厂服务 - 西安瑞森德隆压缩机有限公司</title>
+    <meta name="description" content="瑞森德隆提供Ariel、Cooper-Cameron、Dresser-Rand、Ingersoll Rand、Siemens、Atlas Copco等品牌兼容备件，20万+SKU，价格低30-50%，15-30天交付。">
+    <meta name="keywords" content="压缩机备件,Ariel备件,Ingersoll Rand备件,Dresser-Rand备件,Cooper备件,Atlas Copco备件,气阀,活塞环,密封件,轴承">
+    <style>
+        /* Reset & Base */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: -apple-system, "Microsoft YaHei", "Segoe UI", Roboto, sans-serif; color: #333; background: #f5f7fa; line-height: 1.6; }
+        img { max-width: 100%; display: block; }
+        a { text-decoration: none; color: inherit; }
+        
+        /* Container */
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; }
+        
+        /* Buttons */
+        .btn { display: inline-block; padding: 14px 32px; background: #0056b3; color: #fff; border-radius: 6px; font-weight: 600; font-size: 15px; transition: all 0.3s; border: none; cursor: pointer; }
+        .btn:hover { background: #004494; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,86,179,0.3); }
+        .btn-outline { background: transparent; border: 2px solid #fff; }
+        .btn-outline:hover { background: rgba(255,255,255,0.15); }
+        
+        /* Section Title */
+        .section-title { text-align: center; margin-bottom: 50px; }
+        .section-title h2 { font-size: 32px; color: #0056b3; margin-bottom: 12px; font-weight: 700; }
+        .section-title p { color: #666; font-size: 16px; }
+
+        /* Navigation */
+        header { background: linear-gradient(135deg, #0056b3 0%, #003d82 100%); position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 2px 15px rgba(0,0,0,0.15); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; }
+        .logo { font-size: 22px; font-weight: 700; color: #fff; }
+        .logo span { color: #4fc3f7; }
+        .nav-right { display: flex; align-items: center; gap: 25px; }
+        .nav-menu { display: flex; gap: 25px; list-style: none; }
+        .nav-menu a { color: rgba(255,255,255,0.85); font-size: 15px; font-weight: 500; transition: color 0.3s; padding: 8px 0; }
+        .nav-menu a:hover { color: #fff; }
+        .nav-menu a.active { color: #4fc3f7; }
+        
+        /* Language Switcher */
+        .lang-switcher { display: flex; gap: 6px; }
+        .lang-btn { padding: 5px 12px; border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; color: #fff; font-size: 12px; cursor: pointer; transition: all 0.3s; background: transparent; font-family: inherit; }
+        .lang-btn:hover { background: rgba(255,255,255,0.1); }
+        .lang-btn.active { background: #fff; color: #0056b3; font-weight: 600; }
+        
+        /* Hamburger */
+        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 5px; }
+        .hamburger span { width: 24px; height: 2px; background: #fff; border-radius: 2px; transition: all 0.3s; }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(0,86,179,0.92) 0%, rgba(0,61,130,0.95) 100%), url('./images/image825.png') center/cover;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+            margin-top: 60px;
+        }
+        .hero-content { width: 100%; padding: 0 20px; }
+        .hero h1 { font-size: 42px; margin-bottom: 20px; font-weight: 700; letter-spacing: 1px; }
+        .hero p { font-size: 18px; opacity: 0.95; margin-bottom: 35px; max-width: 700px; margin-left: auto; margin-right: auto; line-height: 1.8; }
+
+        /* Brands Section */
+        .brands { padding: 80px 0; background: #fff; }
+        .brand-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 30px; align-items: center; }
+        .brand-item { text-align: center; padding: 25px 15px; background: #f8f9fa; border-radius: 12px; transition: all 0.3s; }
+        .brand-item:hover { background: #e3f2fd; transform: translateY(-3px); }
+        .brand-item h4 { font-size: 14px; color: #0056b3; font-weight: 600; margin-bottom: 5px; }
+        .brand-item p { font-size: 12px; color: #888; }
+
+        /* Parts Categories */
+        .categories { padding: 80px 0; background: linear-gradient(180deg, #f5f7fa 0%, #e8ecf0 100%); }
+        .category-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; }
+        .category-card { background: #fff; border-radius: 12px; padding: 30px 20px; text-align: center; transition: all 0.35s; box-shadow: 0 3px 15px rgba(0,0,0,0.06); border: 1px solid #e8e8e8; }
+        .category-card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(0,0,0,0.12); border-color: #4fc3f7; }
+        .category-icon { font-size: 48px; margin-bottom: 15px; display: block; }
+        .category-card h3 { font-size: 17px; color: #0056b3; margin-bottom: 10px; font-weight: 600; }
+        .category-card p { font-size: 13px; color: #666; line-height: 1.7; }
+        .category-card .parts-list { margin-top: 15px; text-align: left; }
+        .category-card .parts-list li { font-size: 12px; color: #555; padding: 3px 0; list-style: none; }
+        .category-card .parts-list li::before { content: "•"; color: #4fc3f7; margin-right: 8px; }
+
+        /* Stats Banner */
+        .stats-banner { padding: 60px 0; background: linear-gradient(135deg, #0056b3 0%, #003d82 100%); color: #fff; text-align: center; }
+        .stats-grid { display: flex; justify-content: center; gap: 80px; flex-wrap: wrap; }
+        .stat-item h3 { font-size: 48px; font-weight: 700; margin-bottom: 8px; color: #4fc3f7; }
+        .stat-item p { font-size: 15px; opacity: 0.9; }
+
+        /* Advantages */
+        .advantages { padding: 80px 0; background: #fff; }
+        .adv-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .adv-card { padding: 35px 25px; border-radius: 12px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); text-align: center; transition: all 0.3s; }
+        .adv-card:hover { background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); transform: translateY(-5px); }
+        .adv-icon { font-size: 42px; margin-bottom: 15px; display: block; }
+        .adv-card h3 { font-size: 18px; color: #0056b3; margin-bottom: 12px; font-weight: 600; }
+        .adv-card p { font-size: 14px; color: #555; line-height: 1.7; }
+
+        /* Inquiry Section */
+        .inquiry { padding: 80px 0; background: linear-gradient(180deg, #f5f7fa 0%, #e8ecf0 100%); }
+        .inquiry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
+        .inquiry-info h3 { font-size: 24px; color: #0056b3; margin-bottom: 20px; }
+        .inquiry-info p { color: #555; margin-bottom: 20px; line-height: 1.8; }
+        .inquiry-info ul { list-style: none; }
+        .inquiry-info li { padding: 8px 0; color: #444; }
+        .inquiry-info li::before { content: "✓"; color: #4fc3f7; margin-right: 10px; font-weight: bold; }
+        .inquiry-form { background: #fff; padding: 35px; border-radius: 12px; box-shadow: 0 5px 25px rgba(0,0,0,0.08); }
+        .inquiry-form h3 { font-size: 20px; color: #0056b3; margin-bottom: 25px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: #333; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; transition: border-color 0.3s; font-family: inherit; }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: #4fc3f7; outline: none; }
+        .form-group textarea { resize: vertical; min-height: 100px; }
+        .checkbox-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .checkbox-group label { display: flex; align-items: center; gap: 8px; font-weight: normal; cursor: pointer; }
+        .checkbox-group input { width: auto; }
+
+        /* Footer */
+        footer { background: #1a2a3a; color: #fff; padding: 50px 0 20px; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; margin-bottom: 30px; }
+        .footer-col h3 { font-size: 18px; margin-bottom: 20px; color: #4fc3f7; }
+        .footer-col p { color: #aaa; line-height: 1.8; font-size: 14px; }
+        .footer-col ul { list-style: none; }
+        .footer-col li { margin-bottom: 10px; }
+        .footer-col a { color: #aaa; font-size: 14px; transition: color 0.3s; }
+        .footer-col a:hover { color: #4fc3f7; }
+        .copyright { text-align: center; padding-top: 20px; border-top: 1px solid #2d3e50; color: #888; font-size: 13px; }
+
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .brand-grid { grid-template-columns: repeat(3, 1fr); }
+            .category-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        @media (max-width: 900px) {
+            .adv-grid { grid-template-columns: repeat(2, 1fr); }
+            .inquiry-grid { grid-template-columns: 1fr; }
+        }
+        
+        @media (max-width: 768px) {
+            .hamburger { display: flex; }
+            .nav-menu { display: none; position: absolute; top: 100%; left: 0; right: 0; background: #0056b3; flex-direction: column; padding: 20px; gap: 15px; }
+            .nav-menu.active { display: flex; }
+            .lang-switcher { position: absolute; right: 60px; }
+            .hero { height: 400px; }
+            .hero h1 { font-size: 28px; }
+            .hero p { font-size: 15px; }
+            .brand-grid { grid-template-columns: repeat(2, 1fr); }
+            .category-grid { grid-template-columns: 1fr; }
+            .adv-grid { grid-template-columns: 1fr; }
+            .stats-grid { gap: 40px; }
+            .stat-item h3 { font-size: 36px; }
+            .footer-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="logo">RECENDL <span>瑞森德隆</span></a>
+            <div class="nav-right">
+                <div class="lang-switcher">
+                    <button class="lang-btn active" data-lang="zh">中文</button>
+                    <button class="lang-btn" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="ru">РУ</button>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="index.html" data-i18n="nav_products">产品中心</a></li>
+                    <li><a href="index.html#advantages" data-i18n="nav_advantages">企业优势</a></li>
+                    <li><a href="index.html#contact" data-i18n="nav_contact">联系我们</a></li>
+                    <li><a href="dashboard.html" data-i18n="nav_monitor">设备监控</a></li>
+                    <li><a href="parts.html" class="active" data-i18n="nav_parts">备件服务</a></li>
+                </ul>
+                <div class="hamburger" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-content">
+            <h1 data-i18n="parts_hero_title">全球品牌压缩机备件一站式供应</h1>
+            <p data-i18n="parts_hero_subtitle">20万+ SKU，兼容Ariel、Ingersoll Rand、Dresser-Rand、Cooper-Cameron、Atlas Copco等主流品牌，价格低30-50%，15-30天全球交付</p>
+            <a href="#inquiry" class="btn" data-i18n="btn_inquiry">立即询价</a>
+        </div>
+    </section>
+
+    <!-- Compatible Brands -->
+    <section class="brands">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-i18n="brands_title">兼容全球主流品牌</h2>
+                <p data-i18n="brands_subtitle">我们提供以下品牌的兼容备件，品质对标原厂</p>
+            </div>
+            <div class="brand-grid">
+                <div class="brand-item">
+                    <h4>Ariel</h4>
+                    <p data-i18n="brand_ariel_desc">往复式压缩机</p>
+                </div>
+                <div class="brand-item">
+                    <h4>Ingersoll Rand</h4>
+                    <p data-i18n="brand_ir_desc">往复/离心式</p>
+                </div>
+                <div class="brand-item">
+                    <h4>Dresser-Rand</h4>
+                    <p data-i18n="brand_dr_desc">透平压缩机</p>
+                </div>
+                <div class="brand-item">
+                    <h4>Cooper-Cameron</h4>
+                    <p data-i18n="brand_cooper_desc">离心式压缩机</p>
+                </div>
+                <div class="brand-item">
+                    <h4>Atlas Copco</h4>
+                    <p data-i18n="brand_atlas_desc">无油/喷油机</p>
+                </div>
+                <div class="brand-item">
+                    <h4>Siemens</h4>
+                    <p data-i18n="brand_siemens_desc">工业压缩机</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Parts Categories -->
+    <section class="categories">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-i18n="categories_title">备件品类全覆盖</h2>
+                <p data-i18n="categories_subtitle">从核心部件到易损件，一站式采购</p>
+            </div>
+            <div class="category-grid">
+                <div class="category-card">
+                    <span class="category-icon">🔧</span>
+                    <h3 data-i18n="cat_valves_title">气阀组件</h3>
+                    <p data-i18n="cat_valves_desc">吸气阀、排气阀、卸荷阀、阀片、弹簧</p>
+                    <ul class="parts-list">
+                        <li data-i18n="part_valve1">环状阀/网状阀</li>
+                        <li data-i18n="part_valve2">PTFE/PEEK阀片</li>
+                        <li data-i18n="part_valve3">不锈钢弹簧</li>
+                    </ul>
+                </div>
+                <div class="category-card">
+                    <span class="category-icon">⭕</span>
+                    <h3 data-i18n="cat_rings_title">活塞环与密封</h3>
+                    <p data-i18n="cat_rings_desc">活塞环、导向环、填料环、O型圈</p>
+                    <ul class="parts-list">
+                        <li data-i18n="part_ring1">PTFE复合材料</li>
+                        <li data-i18n="part_ring2">青铜/铸铁环</li>
+                        <li data-i18n="part_ring3">耐高温填料</li>
+                    </ul>
+                </div>
+                <div class="category-card">
+                    <span class="category-icon">⚙️</span>
+                    <h3 data-i18n="cat_bearings_title">轴承与轴瓦</h3>
+                    <p data-i18n="cat_bearings_desc">主轴承、连杆轴承、十字头销轴承</p>
+                    <ul class="parts-list">
+                        <li data-i18n="part_bearing1">滑动轴承</li>
+                        <li data-i18n="part_bearing2">滚动轴承</li>
+                        <li data-i18n="part_bearing3">巴氏合金轴瓦</li>
+                    </ul>
+                </div>
+                <div class="category-card">
+                    <span class="category-icon">🔩</span>
+                    <h3 data-i18n="cat_cylinder_title">气缸部件</h3>
+                    <p data-i18n="cat_cylinder_desc">气缸套、活塞、活塞杆、连接螺栓</p>
+                    <ul class="parts-list">
+                        <li data-i18n="part_cylinder1">铸铁/钢制缸套</li>
+                        <li data-i18n="part_cylinder2">铝合金活塞</li>
+                        <li data-i18n="part_cylinder3">镀硬铬活塞杆</li>
+                    </ul>
+                </div>
+                <div class="category-card">
+                    <span class="category-icon">💧</span>
+                    <h3 data-i18n="cat_lube_title">润滑系统</h3>
+                    <p data-i18n="cat_lube_desc">油泵、滤芯、冷却器、油分离器</p>
+                    <ul class="parts-list">
+                        <li data-i18n="part_lube1">齿轮油泵</li>
+                        <li data-i18n="part_lube2">油滤芯</li>
+                        <li data-i18n="part_lube3">油冷却器芯</li>
+                    </ul>
+                </div>
+                <div class="category-card">
+                    <span class="category-icon">📊</span>
+                    <h3 data-i18n="cat_control_title">控制系统</h3>
+                    <p data-i18n="cat_control_desc">传感器、控制器、仪表、接线盒</p>
+                    <ul class="parts-list">
+                        <li data-i18n="part_control1">压力/温度传感器</li>
+                        <li data-i18n="part_control2">振动监测</li>
+                        <li data-i18n="part_control3">PLC控制板</li>
+                    </ul>
+                </div>
+                <div class="category-card">
+                    <span class="category-icon">🌀</span>
+                    <h3 data-i18n="cat_filter_title">过滤器与分离器</h3>
+                    <p data-i18n="cat_filter_desc">空气滤芯、油滤芯、气液分离器</p>
+                    <ul class="parts-list">
+                        <li data-i18n="part_filter1">进气过滤器</li>
+                        <li data-i18n="part_filter2">油气分离器</li>
+                        <li data-i18n="part_filter3">活性炭过滤器</li>
+                    </ul>
+                </div>
+                <div class="category-card">
+                    <span class="category-icon">🔋</span>
+                    <h3 data-i18n="cat_motor_title">电机与驱动</h3>
+                    <p data-i18n="cat_motor_desc">电机、联轴器、皮带、皮带轮</p>
+                    <ul class="parts-list">
+                        <li data-i18n="part_motor1">防爆电机</li>
+                        <li data-i18n="part_motor2">弹性联轴器</li>
+                        <li data-i18n="part_motor3">同步带</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Banner -->
+    <section class="stats-banner">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>200,000+</h3>
+                    <p data-i18n="stat_sku">备件SKU</p>
+                </div>
+                <div class="stat-item">
+                    <h3>30-50%</h3>
+                    <p data-i18n="stat_price">价格优势</p>
+                </div>
+                <div class="stat-item">
+                    <h3>15-30天</h3>
+                    <p data-i18n="stat_delivery">全球交付</p>
+                </div>
+                <div class="stat-item">
+                    <h3>50+</h3>
+                    <p data-i18n="stat_brands">兼容品牌</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advantages -->
+    <section class="advantages">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-i18n="parts_adv_title">为什么选择我们的备件</h2>
+                <p data-i18n="parts_adv_subtitle">品质对标原厂，价格更具优势</p>
+            </div>
+            <div class="adv-grid">
+                <div class="adv-card">
+                    <span class="adv-icon">✅</span>
+                    <h3 data-i18n="adv_quality_title">品质保证</h3>
+                    <p data-i18n="adv_quality_desc">ISO 9001认证工厂生产，材料与工艺对标原厂标准，提供材质报告和尺寸检测报告</p>
+                </div>
+                <div class="adv-card">
+                    <span class="adv-icon">💰</span>
+                    <h3 data-i18n="adv_price_title">价格优势</h3>
+                    <p data-i18n="adv_price_desc">依托中国成熟工业供应链，价格比原厂低30-50%，大幅降低运维成本</p>
+                </div>
+                <div class="adv-card">
+                    <span class="adv-icon">📦</span>
+                    <h3 data-i18n="adv_stock_title">现货储备</h3>
+                    <p data-i18n="adv_stock_desc">西安仓库常备2万+热门SKU，标准件48小时发货，定制件15-30天交付</p>
+                </div>
+                <div class="adv-card">
+                    <span class="adv-icon">🛠️</span>
+                    <h3 data-i18n="adv_tech_title">技术支持</h3>
+                    <p data-i18n="adv_tech_desc">工程师团队提供安装指导、故障诊断、选型建议，帮助您快速解决设备问题</p>
+                </div>
+                <div class="adv-card">
+                    <span class="adv-icon">🌐</span>
+                    <h3 data-i18n="adv_global_title">全球配送</h3>
+                    <p data-i18n="adv_global_desc">与DHL、FedEx、顺丰等物流商合作，支持空运、海运、铁路，覆盖俄罗斯、中亚、中东</p>
+                </div>
+                <div class="adv-card">
+                    <span class="adv-icon">📋</span>
+                    <h3 data-i18n="adv_warranty_title">质量承诺</h3>
+                    <p data-i18n="adv_warranty_desc">所有产品提供12个月质保，质量问题无条件退换，让您采购无忧</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Inquiry Section -->
+    <section class="inquiry" id="inquiry">
+        <div class="container">
+            <div class="inquiry-grid">
+                <div class="inquiry-info">
+                    <h3 data-i18n="inquiry_info_title">联系我们获取报价</h3>
+                    <p data-i18n="inquiry_info_desc">请提供您所需的备件型号或原厂件号，我们将在24小时内回复报价和交期。</p>
+                    <ul>
+                        <li data-i18n="inquiry_item1">支持原厂件号查询</li>
+                        <li data-i18n="inquiry_item2">提供设备型号和序列号</li>
+                        <li data-i18n="inquiry_item3">可发送照片或图纸</li>
+                        <li data-i18n="inquiry_item4">批量采购享额外折扣</li>
+                    </ul>
+                    <p style="margin-top: 20px;">
+                        <strong data-i18n="contact_direct">直接联系：</strong><br>
+                        +86 175 8644 0006<br>
+                        +86 185 9196 0259<br>
+                        22425907@qq.com
+                        1403889049@qq.com
+                    </p>
+                </div>
+                <div class="inquiry-form">
+                    <h3 data-i18n="form_title">备件询价表</h3>
+                    <form id="partsForm">
+                        <div class="form-group">
+                            <label data-i18n="form_name_label">姓名 *</label>
+                            <input type="text" name="name" required data-i18n-placeholder="form_name_placeholder">
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="form_email_label">邮箱 *</label>
+                            <input type="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="form_phone_label">电话 / WhatsApp</label>
+                            <input type="text" name="phone">
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="form_brand_label">设备品牌</label>
+                            <select name="brand">
+                                <option value="" data-i18n="form_select_brand">请选择品牌</option>
+                                <option value="Ariel">Ariel</option>
+                                <option value="Ingersoll Rand">Ingersoll Rand</option>
+                                <option value="Dresser-Rand">Dresser-Rand</option>
+                                <option value="Cooper-Cameron">Cooper-Cameron</option>
+                                <option value="Atlas Copco">Atlas Copco</option>
+                                <option value="Siemens">Siemens</option>
+                                <option value="Other" data-i18n="form_brand_other">其他品牌</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="form_parts_label">所需备件</label>
+                            <textarea name="parts" rows="4" data-i18n-placeholder="form_parts_placeholder"></textarea>
+                        </div>
+                        <button type="submit" class="btn" data-i18n="form_submit">提交询价</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3 data-i18n="footer_company">西安瑞森德隆</h3>
+                    <p data-i18n="footer_desc">专业的压缩机及成套设备解决方案提供商，服务全球油气田及工业领域。</p>
+                </div>
+                <div class="footer-col">
+                    <h3 data-i18n="footer_links">快速链接</h3>
+                    <ul>
+                        <li><a href="index.html" data-i18n="nav_products">产品中心</a></li>
+                        <li><a href="index.html#advantages" data-i18n="nav_advantages">企业优势</a></li>
+                        <li><a href="index.html#contact" data-i18n="nav_contact">联系我们</a></li>
+                        <li><a href="dashboard.html" data-i18n="nav_monitor">设备监控</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3 data-i18n="footer_contact_title">联系方式</h3>
+                    <ul style="list-style: none; color: #aaa; font-size: 14px;">
+                        <li>+86 175 8644 0006</li>
+                        <li>+86 185 9196 0259</li>
+                        <li>22425907@qq.com</li>
+                        <li>1403889049@qq.com</li>
+                        <li data-i18n="footer_address">陕西省西安市经济技术开发区</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2026 西安瑞森德隆工业科技有限公司 版权所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    // i18n Translations
+    const i18n = {
+        zh: {
+            nav_products: "产品中心",
+            nav_advantages: "企业优势",
+            nav_contact: "联系我们",
+            nav_monitor: "设备监控",
+            nav_parts: "备件服务",
+            parts_hero_title: "全球品牌压缩机备件一站式供应",
+            parts_hero_subtitle: "20万+ SKU，兼容Ariel、Ingersoll Rand、Dresser-Rand、Cooper-Cameron、Atlas Copco等主流品牌，价格低30-50%，15-30天全球交付",
+            btn_inquiry: "立即询价",
+            brands_title: "兼容全球主流品牌",
+            brands_subtitle: "我们提供以下品牌的兼容备件，品质对标原厂",
+            brand_ariel_desc: "往复式压缩机",
+            brand_ir_desc: "往复/离心式",
+            brand_dr_desc: "透平压缩机",
+            brand_cooper_desc: "离心式压缩机",
+            brand_atlas_desc: "无油/喷油机",
+            brand_siemens_desc: "工业压缩机",
+            categories_title: "备件品类全覆盖",
+            categories_subtitle: "从核心部件到易损件，一站式采购",
+            cat_valves_title: "气阀组件",
+            cat_valves_desc: "吸气阀、排气阀、卸荷阀、阀片、弹簧",
+            part_valve1: "环状阀/网状阀",
+            part_valve2: "PTFE/PEEK阀片",
+            part_valve3: "不锈钢弹簧",
+            cat_rings_title: "活塞环与密封",
+            cat_rings_desc: "活塞环、导向环、填料环、O型圈",
+            part_ring1: "PTFE复合材料",
+            part_ring2: "青铜/铸铁环",
+            part_ring3: "耐高温填料",
+            cat_bearings_title: "轴承与轴瓦",
+            cat_bearings_desc: "主轴承、连杆轴承、十字头销轴承",
+            part_bearing1: "滑动轴承",
+            part_bearing2: "滚动轴承",
+            part_bearing3: "巴氏合金轴瓦",
+            cat_cylinder_title: "气缸部件",
+            cat_cylinder_desc: "气缸套、活塞、活塞杆、连接螺栓",
+            part_cylinder1: "铸铁/钢制缸套",
+            part_cylinder2: "铝合金活塞",
+            part_cylinder3: "镀硬铬活塞杆",
+            cat_lube_title: "润滑系统",
+            cat_lube_desc: "油泵、滤芯、冷却器、油分离器",
+            part_lube1: "齿轮油泵",
+            part_lube2: "油滤芯",
+            part_lube3: "油冷却器芯",
+            cat_control_title: "控制系统",
+            cat_control_desc: "传感器、控制器、仪表、接线盒",
+            part_control1: "压力/温度传感器",
+            part_control2: "振动监测",
+            part_control3: "PLC控制板",
+            cat_filter_title: "过滤器与分离器",
+            cat_filter_desc: "空气滤芯、油滤芯、气液分离器",
+            part_filter1: "进气过滤器",
+            part_filter2: "油气分离器",
+            part_filter3: "活性炭过滤器",
+            cat_motor_title: "电机与驱动",
+            cat_motor_desc: "电机、联轴器、皮带、皮带轮",
+            part_motor1: "防爆电机",
+            part_motor2: "弹性联轴器",
+            part_motor3: "同步带",
+            stat_sku: "备件SKU",
+            stat_price: "价格优势",
+            stat_delivery: "全球交付",
+            stat_brands: "兼容品牌",
+            parts_adv_title: "为什么选择我们的备件",
+            parts_adv_subtitle: "品质对标原厂，价格更具优势",
+            adv_quality_title: "品质保证",
+            adv_quality_desc: "ISO 9001认证工厂生产，材料与工艺对标原厂标准，提供材质报告和尺寸检测报告",
+            adv_price_title: "价格优势",
+            adv_price_desc: "依托中国成熟工业供应链，价格比原厂低30-50%，大幅降低运维成本",
+            adv_stock_title: "现货储备",
+            adv_stock_desc: "西安仓库常备2万+热门SKU，标准件48小时发货，定制件15-30天交付",
+            adv_tech_title: "技术支持",
+            adv_tech_desc: "工程师团队提供安装指导、故障诊断、选型建议，帮助您快速解决设备问题",
+            adv_global_title: "全球配送",
+            adv_global_desc: "与DHL、FedEx、顺丰等物流商合作，支持空运、海运、铁路，覆盖俄罗斯、中亚、中东",
+            adv_warranty_title: "质量承诺",
+            adv_warranty_desc: "所有产品提供12个月质保，质量问题无条件退换，让您采购无忧",
+            inquiry_info_title: "联系我们获取报价",
+            inquiry_info_desc: "请提供您所需的备件型号或原厂件号，我们将在24小时内回复报价和交期。",
+            inquiry_item1: "支持原厂件号查询",
+            inquiry_item2: "提供设备型号和序列号",
+            inquiry_item3: "可发送照片或图纸",
+            inquiry_item4: "批量采购享额外折扣",
+            contact_direct: "直接联系：",
+            form_title: "备件询价表",
+            form_name_label: "姓名 *",
+            form_name_placeholder: "请输入您的姓名",
+            form_email_label: "邮箱 *",
+            form_phone_label: "电话 / WhatsApp",
+            form_brand_label: "设备品牌",
+            form_select_brand: "请选择品牌",
+            form_brand_other: "其他品牌",
+            form_parts_label: "所需备件",
+            form_parts_placeholder: "请提供备件名称、型号、原厂件号、数量等信息...",
+            form_submit: "提交询价",
+            footer_company: "西安瑞森德隆",
+            footer_desc: "专业的压缩机及成套设备解决方案提供商，服务全球油气田及工业领域。",
+            footer_links: "快速链接",
+            footer_contact_title: "联系方式",
+            footer_address: "陕西省西安市经济技术开发区"
+        },
+        en: {
+            nav_products: "Products",
+            nav_advantages: "Advantages",
+            nav_contact: "Contact",
+            nav_monitor: "Monitoring",
+            nav_parts: "Spare Parts",
+            parts_hero_title: "One-Stop Supply of Compressor Spare Parts for Global Brands",
+            parts_hero_subtitle: "200,000+ SKUs, compatible with Ariel, Ingersoll Rand, Dresser-Rand, Cooper-Cameron, Atlas Copco and more. 30-50% lower price, 15-30 days global delivery",
+            btn_inquiry: "Request Quote",
+            brands_title: "Compatible with Major Global Brands",
+            brands_subtitle: "We provide compatible spare parts for the following brands, quality matches OEM standards",
+            brand_ariel_desc: "Reciprocating",
+            brand_ir_desc: "Recip/Centrifugal",
+            brand_dr_desc: "Turbine",
+            brand_cooper_desc: "Centrifugal",
+            brand_atlas_desc: "Oil-free/Injection",
+            brand_siemens_desc: "Industrial",
+            categories_title: "Complete Parts Coverage",
+            categories_subtitle: "From core components to wear parts, one-stop sourcing",
+            cat_valves_title: "Valve Assembly",
+            cat_valves_desc: "Suction valves, discharge valves, unloaders, valve plates, springs",
+            part_valve1: "Ring/Plate valves",
+            part_valve2: "PTFE/PEEK plates",
+            part_valve3: "Stainless springs",
+            cat_rings_title: "Piston Rings & Seals",
+            cat_rings_desc: "Piston rings, rider rings, packing rings, O-rings",
+            part_ring1: "PTFE composite",
+            part_ring2: "Bronze/Cast iron",
+            part_ring3: "High-temp packing",
+            cat_bearings_title: "Bearings & Bushings",
+            cat_bearings_desc: "Main bearings, connecting rod bearings, crosshead pin bearings",
+            part_bearing1: "Plain bearings",
+            part_bearing2: "Rolling bearings",
+            part_bearing3: "Babbitt bushings",
+            cat_cylinder_title: "Cylinder Components",
+            cat_cylinder_desc: "Cylinder liners, pistons, piston rods, fasteners",
+            part_cylinder1: "Cast iron/Steel liners",
+            part_cylinder2: "Aluminum pistons",
+            part_cylinder3: "Chrome-plated rods",
+            cat_lube_title: "Lubrication System",
+            cat_lube_desc: "Oil pumps, filter elements, coolers, separators",
+            part_lube1: "Gear oil pumps",
+            part_lube2: "Oil filters",
+            part_lube3: "Cooler cores",
+            cat_control_title: "Control System",
+            cat_control_desc: "Sensors, controllers, gauges, junction boxes",
+            part_control1: "Pressure/temp sensors",
+            part_control2: "Vibration monitors",
+            part_control3: "PLC boards",
+            cat_filter_title: "Filters & Separators",
+            cat_filter_desc: "Air filters, oil filters, gas-liquid separators",
+            part_filter1: "Intake filters",
+            part_filter2: "Oil separators",
+            part_filter3: "Carbon filters",
+            cat_motor_title: "Motor & Drive",
+            cat_motor_desc: "Motors, couplings, belts, pulleys",
+            part_motor1: "Explosion-proof motors",
+            part_motor2: "Flexible couplings",
+            part_motor3: "Timing belts",
+            stat_sku: "Spare Parts SKUs",
+            stat_price: "Price Advantage",
+            stat_delivery: "Global Delivery",
+            stat_brands: "Compatible Brands",
+            parts_adv_title: "Why Choose Our Spare Parts",
+            parts_adv_subtitle: "OEM-quality at better prices",
+            adv_quality_title: "Quality Assurance",
+            adv_quality_desc: "ISO 9001 certified manufacturing, materials and processes match OEM standards, material certificates and inspection reports available",
+            adv_price_title: "Price Advantage",
+            adv_price_desc: "Leveraging China's mature industrial supply chain, 30-50% lower than OEM prices, significantly reducing maintenance costs",
+            adv_stock_title: "Stock Availability",
+            adv_stock_desc: "Xi'an warehouse stocks 20,000+ popular SKUs, standard parts ship in 48 hours, custom parts in 15-30 days",
+            adv_tech_title: "Technical Support",
+            adv_tech_desc: "Engineering team provides installation guidance, troubleshooting, and selection advice to help solve your equipment issues",
+            adv_global_title: "Global Shipping",
+            adv_global_desc: "Partnership with DHL, FedEx, SF Express. Air, sea, and rail shipping available to Russia, Central Asia, and Middle East",
+            adv_warranty_title: "Warranty",
+            adv_warranty_desc: "All products come with 12-month warranty, unconditional return/replacement for quality issues, worry-free purchasing",
+            inquiry_info_title: "Contact Us for Quote",
+            inquiry_info_desc: "Please provide the part numbers or OEM numbers you need. We will reply with quote and lead time within 24 hours.",
+            inquiry_item1: "OEM part number lookup supported",
+            inquiry_item2: "Provide equipment model and serial number",
+            inquiry_item3: "Photos or drawings accepted",
+            inquiry_item4: "Bulk order discounts available",
+            contact_direct: "Direct Contact:",
+            form_title: "Parts Inquiry Form",
+            form_name_label: "Name *",
+            form_name_placeholder: "Enter your name",
+            form_email_label: "Email *",
+            form_phone_label: "Phone / WhatsApp",
+            form_brand_label: "Equipment Brand",
+            form_select_brand: "Select brand",
+            form_brand_other: "Other brand",
+            form_parts_label: "Parts Required",
+            form_parts_placeholder: "Please provide part name, model, OEM number, quantity...",
+            form_submit: "Submit Inquiry",
+            footer_company: "Xi'an Recendl",
+            footer_desc: "Professional compressor and integrated equipment solution provider serving global oil & gas and industrial sectors.",
+            footer_links: "Quick Links",
+            footer_contact_title: "Contact",
+            footer_address: "Economic Development Zone, Xi'an, Shaanxi, China"
+        },
+        ru: {
+            nav_products: "Продукция",
+            nav_advantages: "Преимущества",
+            nav_contact: "Контакты",
+            nav_monitor: "Мониторинг",
+            nav_parts: "Запчасти",
+            parts_hero_title: "Комплексная поставка запасных частей для компрессоров мировых брендов",
+            parts_hero_subtitle: "200 000+ артикулов, совместимость с Ariel, Ingersoll Rand, Dresser-Rand, Cooper-Cameron, Atlas Copco. Цена на 30-50% ниже, доставка 15-30 дней",
+            btn_inquiry: "Запросить цену",
+            brands_title: "Совместимость с мировыми брендами",
+            brands_subtitle: "Мы поставляем совместимые запчасти для следующих брендов, качество соответствует OEM",
+            brand_ariel_desc: "Поршневые",
+            brand_ir_desc: "Поршневые/Центробежные",
+            brand_dr_desc: "Турбокомпрессоры",
+            brand_cooper_desc: "Центробежные",
+            brand_atlas_desc: "Безмасляные/Маслозаполненные",
+            brand_siemens_desc: "Промышленные",
+            categories_title: "Полный ассортимент запчастей",
+            categories_subtitle: "От основных узлов до расходных материалов, всё в одном месте",
+            cat_valves_title: "Клапанные узлы",
+            cat_valves_desc: "Всасывающие клапаны, нагнетательные клапаны, разгрузочные устройства",
+            part_valve1: "Кольцевые/пластинчатые клапаны",
+            part_valve2: "Пластины PTFE/PEEK",
+            part_valve3: "Пружины нержавеющие",
+            cat_rings_title: "Поршневые кольца и уплотнения",
+            cat_rings_desc: "Поршневые кольца, направляющие кольца, сальники, O-кольца",
+            part_ring1: "Композит PTFE",
+            part_ring2: "Бронза/чугун",
+            part_ring3: "Высокотемпературные сальники",
+            cat_bearings_title: "Подшипники и втулки",
+            cat_bearings_desc: "Коренные подшипники, шатунные подшипники, втулки крейцкопфа",
+            part_bearing1: "Подшипники скольжения",
+            part_bearing2: "Подшипники качения",
+            part_bearing3: "Баббитовые втулки",
+            cat_cylinder_title: "Детали цилиндра",
+            cat_cylinder_desc: "Гильзы цилиндра, поршни, штоки поршня, крепёж",
+            part_cylinder1: "Гильзы чугунные/стальные",
+            part_cylinder2: "Поршни алюминиевые",
+            part_cylinder3: "Штоки с хромовым покрытием",
+            cat_lube_title: "Система смазки",
+            cat_lube_desc: "Масляные насосы, фильтроэлементы, охладители, сепараторы",
+            part_lube1: "Шестерённые насосы",
+            part_lube2: "Фильтроэлементы",
+            part_lube3: "Секции охладителя",
+            cat_control_title: "Система управления",
+            cat_control_desc: "Датчики, контроллеры, приборы, клеммные коробки",
+            part_control1: "Датчики давления/температуры",
+            part_control2: "Мониторы вибрации",
+            part_control3: "Платы ПЛК",
+            cat_filter_title: "Фильтры и сепараторы",
+            cat_filter_desc: "Воздушные фильтры, масляные фильтры, газожидкостные сепараторы",
+            part_filter1: "Всасывающие фильтры",
+            part_filter2: "Маслоотделители",
+            part_filter3: "Угольные фильтры",
+            cat_motor_title: "Электродвигатели и привод",
+            cat_motor_desc: "Двигатели, муфты, ремни, шкивы",
+            part_motor1: "Взрывозащищённые двигатели",
+            part_motor2: "Упругие муфты",
+            part_motor3: "Зубчатые ремни",
+            stat_sku: "Артикулов запчастей",
+            stat_price: "Ценовое преимущество",
+            stat_delivery: "Глобальная доставка",
+            stat_brands: "Совместимых брендов",
+            parts_adv_title: "Почему выбирают наши запчасти",
+            parts_adv_subtitle: "Качество на уровне OEM по выгодной цене",
+            adv_quality_title: "Гарантия качества",
+            adv_quality_desc: "Производство по ISO 9001, материалы и технологии соответствуют стандартам OEM, предоставляем сертификаты материалов и отчёты контроля",
+            adv_price_title: "Ценовое преимущество",
+            adv_price_desc: "Благодаря развитой промышленной цепочке Китая цена на 30-50% ниже OEM, значительная экономия на обслуживании",
+            adv_stock_title: "Складской запас",
+            adv_stock_desc: "Склад в Сиане хранит 20 000+ востребованных артикулов, стандартные детали отгружаются за 48 часов, изготовление 15-30 дней",
+            adv_tech_title: "Техническая поддержка",
+            adv_tech_desc: "Инженеры помогают с монтажом, диагностикой неисправностей, подбором запчастей для быстрого решения проблем с оборудованием",
+            adv_global_title: "Глобальная доставка",
+            adv_global_desc: "Сотрудничаем с DHL, FedEx, SF. Авиа, морская и ж/д доставка в Россию, Центральную Азию и Ближний Восток",
+            adv_warranty_title: "Гарантия",
+            adv_warranty_desc: "На все продукты 12 месяцев гарантии, безусловный возврат/замена при производственном браке, покупка без риска",
+            inquiry_info_title: "Свяжитесь с нами для получения цены",
+            inquiry_info_desc: "Укажите необходимые номера деталей или OEM-номера. Мы ответим с ценой и сроком поставки в течение 24 часов.",
+            inquiry_item1: "Поиск по OEM-номеру",
+            inquiry_item2: "Укажите модель и серийный номер оборудования",
+            inquiry_item3: "Можно прислать фото или чертежи",
+            inquiry_item4: "Скидки на оптовые заказы",
+            contact_direct: "Прямой контакт:",
+            form_title: "Форма запроса запчастей",
+            form_name_label: "Имя *",
+            form_name_placeholder: "Введите ваше имя",
+            form_email_label: "Email *",
+            form_phone_label: "Телефон / WhatsApp",
+            form_brand_label: "Бренд оборудования",
+            form_select_brand: "Выберите бренд",
+            form_brand_other: "Другой бренд",
+            form_parts_label: "Требуемые запчасти",
+            form_parts_placeholder: "Укажите название, модель, OEM-номер, количество...",
+            form_submit: "Отправить запрос",
+            footer_company: "Сиань·Рэйсэндлун",
+            footer_desc: "Профессиональный поставщик компрессорного оборудования и комплексных решений для нефтегазовой и промышленной отраслей.",
+            footer_links: "Быстрые ссылки",
+            footer_contact_title: "Контакты",
+            footer_address: "Зона экономического развития, Сиань, Шэньси, Китай"
+        }
+    };
+
+    // Set Language
+    function setLanguage(lang) {
+        document.documentElement.lang = lang === 'zh' ? 'zh-CN' : (lang === 'ru' ? 'ru-RU' : 'en');
+        
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (i18n[lang] && i18n[lang][key]) {
+                el.textContent = i18n[lang][key];
+            }
+        });
+        
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+            const key = el.getAttribute('data-i18n-placeholder');
+            if (i18n[lang] && i18n[lang][key]) {
+                el.placeholder = i18n[lang][key];
+            }
+        });
+
+        // Update select options
+        document.querySelectorAll('select option[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (i18n[lang] && i18n[lang][key]) {
+                el.textContent = i18n[lang][key];
+            }
+        });
+        
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+        });
+        
+        localStorage.setItem('recendl-lang', lang);
+    }
+
+    // Toggle Mobile Menu
+    function toggleMenu() {
+        document.querySelector('.nav-menu').classList.toggle('active');
+    }
+
+    // Event Listeners
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', () => setLanguage(btn.getAttribute('data-lang')));
+    });
+
+    // Form submission
+    document.getElementById('partsForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert(i18n[localStorage.getItem('recendl-lang') || 'zh'].form_submit_success || '感谢您的询价！我们将在24小时内回复。');
+        this.reset();
+    });
+
+    // Initialize
+    const savedLang = localStorage.getItem('recendl-lang') || 'zh';
+    setLanguage(savedLang);
+    </script>
+</body>
+</html>
