@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -694,15 +695,65 @@
         });
     });
 
-    // Form submission
+    // Form submission - EmailJS via REST API (no SDK needed, works on localhost)
     const inquiryForm = document.getElementById('inquiryForm');
+    const inquirySuccess = document.getElementById('inquirySuccess');
     if (inquiryForm) {
         inquiryForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            inquiryForm.style.display = 'none';
-            document.getElementById('inquirySuccess').style.display = 'block';
+            const btn = this.querySelector('button[type=submit]');
+            const origText = btn.textContent;
+            btn.textContent = '发送中...';
+            btn.disabled = true;
+            // Collect checked products
+            var products = [];
+            this.querySelectorAll('input[name=product]:checked').forEach(function(cb){ products.push(cb.value); });
+            var templateParams = {
+                name: this.querySelector('[name=name]').value,
+                email: this.querySelector('[name=email]').value,
+                phone: this.querySelector('[name=phone]').value,
+                company: '',
+                message: this.querySelector('[name=message]').value + (products.length ? '\n\n感兴趣产品: ' + products.join(', ') : ''),
+                title: ''
+            };
+            fetch('https://api.emailjs.com/api/v1.0/email/send', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    service_id: 'service_no1ylkt',
+                    template_id: 'template_esiheme',
+                    user_id: 'UrJHm5PP1tXquivUc',
+                    template_params: templateParams
+                })
+            })
+            .then(function(res) {
+                // EmailJS may return non-JSON on error, handle both
+                return res.text().then(function(text) {
+                    console.log('EmailJS response (' + res.status + '):', text);
+                    try { return { status: res.status, data: JSON.parse(text) }; }
+                    catch(e) { return { status: res.status, data: text }; }
+                });
+            })
+            .then(function(result) {
+                if (result.status === 200) {
+                    alert('感谢您的询价！我们将在24小时内回复。');
+                    inquiryForm.style.display = 'none';
+                    if (inquirySuccess) inquirySuccess.style.display = 'block';
+                } else {
+                    alert('发送失败(' + result.status + ': ' + result.data + ')，请稍后重试或直接邮件联系: 22425907@qq.com');
+                    btn.textContent = origText;
+                    btn.disabled = false;
+                }
+            })
+            .catch(function(err) {
+                console.error('Fetch error:', err);
+                alert('网络错误: ' + err.message + '\n请稍后重试或直接邮件联系: 22425907@qq.com');
+                btn.textContent = origText;
+                btn.disabled = false;
+            });
         });
     }
     </script>
+
 </body>
 </html>
