@@ -834,8 +834,38 @@
     // Form submission
     document.getElementById('partsForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        alert(i18n[localStorage.getItem('recendl-lang') || 'zh'].form_submit_success || '感谢您的询价！我们将在24小时内回复。');
-        this.reset();
+        var form = this;
+        var templateParams = {
+            name: form.querySelector('[name=name]').value,
+            email: form.querySelector('[name=email]').value,
+            phone: form.querySelector('[name=phone]').value,
+            message: '品牌: ' + (form.querySelector('[name=brand]').value || '未选择') + '\n\n所需备件:\n' + (form.querySelector('[name=parts]').value || '未填写'),
+            title: ''
+        };
+        fetch('https://api.emailjs.com/api/v1.0/email/send', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                service_id: 'service_no1ylkt',
+                template_id: 'template_esiheme',
+                user_id: 'UrJHm5PP1tXquivUc',
+                template_params: templateParams
+            })
+        })
+        .then(function(res) { return res.text().then(function(text) {
+            console.log('EmailJS response (' + res.status + '):', text);
+            try { return { status: res.status, data: JSON.parse(text) }; }
+            catch(e) { return { status: res.status, data: text }; }
+        });})
+        .then(function(result) {
+            if (result.status === 200) {
+                alert(i18n[localStorage.getItem('recendl-lang') || 'zh'].form_submit_success || '感谢您的询价！我们将在24小时内回复。');
+                form.reset();
+            } else {
+                alert('发送失败(' + result.status + '): ' + (result.data.message || result.data));
+            }
+        })
+        .catch(function(err) { alert('发送错误: ' + err.message); });
     });
 
     // Initialize
