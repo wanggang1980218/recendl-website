@@ -698,15 +698,53 @@
         });
     });
 
-    // Form submission
+    // Form submission - EmailJS
     const inquiryForm = document.getElementById('inquiryForm');
     if (inquiryForm) {
         inquiryForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            inquiryForm.style.display = 'none';
-            document.getElementById('inquirySuccess').style.display = 'block';
+
+            const btn = this.querySelector('[type="submit"]');
+            const origText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = '发送中...';
+
+            // 收集选中的产品
+            const products = [];
+            this.querySelectorAll('input[name="product"]:checked').forEach(function(cb) {
+                const label = cb.nextElementSibling;
+                products.push(label ? label.textContent.trim() : cb.value);
+            });
+
+            const templateParams = {
+                from_name: this.elements.name.value,
+                from_email: this.elements.email.value,
+                phone: this.elements.phone.value || '未填写',
+                product: products.length > 0 ? products.join(', ') : '未选择',
+                message: this.elements.message.value || '无'
+            };
+
+            emailjs.send('service_no1ylkt', 'template_esiheme', templateParams)
+                .then(function() {
+                    inquiryForm.style.display = 'none';
+                    document.getElementById('inquirySuccess').style.display = 'block';
+                    btn.disabled = false;
+                    btn.textContent = origText;
+                    inquiryForm.reset();
+                }, function(error) {
+                    alert('发送失败，请稍后重试或直接电话联系：+86 175 8644 0006\n错误代码：' + (error.status || error.text || '未知'));
+                    btn.disabled = false;
+                    btn.textContent = origText;
+                    console.error('EmailJS Error:', error);
+                });
         });
     }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        (function() {
+            emailjs.init('UrJHm5PP1tXquivUc');
+        })();
     </script>
     <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script>
 
